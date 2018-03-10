@@ -61,8 +61,21 @@
     "/query_edge" : {
       "get" : {
         "tags" : [ "developers" ],
-        "summary" : "Query for edges connecting two entities with GNBR",
+        "summary" : "Query for an edge",
         "operationId" : "getEdge",
+        "description" : "Query for edges connecting two entities within GNBR",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "entity1",
+          "description" : "GNBR-ID for first entity",
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "entity2",
+          "description" : "GNBR-ID for second entity",
+          "type" : "string"
+        } ],
         "responses" : {
           "200" : {
             "description" : "search results matching criteria",
@@ -129,10 +142,6 @@
         "sentence" : {
           "type" : "string",
           "example" : null
-        },
-        "pubmed_id" : {
-          "type" : "string",
-          "example" : "pubmed:23411283"
         }
       }
     },
