@@ -1,3 +1,11 @@
+# Set input folder
+data_dir=~/gnbr/data
+# add to path
+export PATH=$PATH:$data_dir
+
+mkdir -p $data_dir
+cd $data_dir
+
 # Download GNBR theme data and entity mappings
 
 wget https://zenodo.org/record/1134693/files/part-i-chemical-disease-path-theme-distributions.txt
@@ -20,12 +28,17 @@ wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-gene-gene-
 # Download CTD data
 
 wget "https://catalystresearch.io/product_downloads?token=&productCode=ctd&fileURL=%2Freports%2FCTD_chemicals.csv.gz&referrer=&sourceURL=http%3A%2F%2Fctd.mdibl.org%2Fdownloads%2F&redirect=http%3A%2F%2Fctd.mdibl.org%2Freports%2FCTD_chemicals.csv.gz" -O CTD_chemicals.csv.gz
+gunzip CTD_chemicals.csv.gz 
 
 wget "https://catalystresearch.io/product_downloads?token=&productCode=ctd&fileURL=%2Freports%2FCTD_diseases.csv.gz&referrer=&sourceURL=http%3A%2F%2Fctd.mdibl.org%2Fdownloads%2F&redirect=http%3A%2F%2Fctd.mdibl.org%2Freports%2FCTD_diseases.csv.gz" -O CTD_diseases.csv.gz
+gunzip CTD_diseases.csv.gz 
 
 # Download pubtator data for mapping raw strings back to their IDs
 wget "ftp://ftp.ncbi.nlm.nih.gov/pub/lu/PubTator/chemical2pubtator.gz" -O chemical2pubtator.gz
+gunzip chemical2pubtator.csv.gz 
 
 wget "ftp://ftp.ncbi.nlm.nih.gov/pub/lu/PubTator/disease2pubtator.gz" -O disease2pubtator.gz
+gunzip disease2pubtator.csv.gz 
 
 wget "ftp://ftp.ncbi.nlm.nih.gov/pub/lu/PubTator/gene2pubtator.gz" -O gene2pubtator.gz
+gunzip gene2pubtator.csv.gz 
