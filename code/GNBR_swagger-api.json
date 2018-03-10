@@ -121,11 +121,12 @@
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "query",
+          "required" : true,
           "name" : "seedNodes",
           "description" : "gnbrIDs for subgraph",
           "type" : "array",
           "items" : {
-            "type" : "#/definitions/gnbrEntity"
+            "type" : "string"
           }
         } ],
         "responses" : {
