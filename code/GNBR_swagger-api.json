@@ -108,7 +108,7 @@
     "gnbrEntity" : {
       "required" : [ "name" ],
       "properties" : {
-        "entity_ID" : {
+        "entityID" : {
           "type" : "string",
           "example" : "MESH:D000068718"
         },
@@ -116,7 +116,7 @@
           "type" : "array",
           "example" : [ "Rosuvastatin", "Crestor", "Calcium, Rosuvastatin" ]
         },
-        "entity_type" : {
+        "entityType" : {
           "type" : "string",
           "example" : "chemical"
         }
