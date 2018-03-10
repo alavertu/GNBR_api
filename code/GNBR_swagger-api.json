@@ -23,9 +23,9 @@
     "/find_entity" : {
       "get" : {
         "tags" : [ "developers" ],
-        "summary" : "searches entities within GNBR for a matching ID, based on input string",
+        "summary" : "Find GNBR identifier",
         "operationId" : "getIdentifier",
-        "description" : "Search for entity ids with GNBR\n",
+        "description" : "Searches entities within GNBR for a matching ID, based on input string",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "query",
