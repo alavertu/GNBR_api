@@ -193,7 +193,19 @@
       }
     },
     "gnbrNeighborhood" : {
-      "required" : [ "entity_id" ]
+      "required" : [ "entity_id", "neighborhood" ],
+      "properties" : {
+        "entity_id" : {
+          "type" : "string",
+          "example" : "MESH:D000068718"
+        },
+        "neighborhood" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/gnbrAssociation"
+          }
+        }
+      }
     }
   },
   "host" : "virtserver.swaggerhub.com",
