@@ -89,19 +89,14 @@
     "/getNodeNeighbors" : {
       "get" : {
         "tags" : [ "developers" ],
-        "summary" : "Query for an edge",
+        "summary" : "Get all neighbors of a particular node",
         "operationId" : "getNodeNeighbors",
-        "description" : "Query for edges connecting two entities within GNBR",
+        "description" : "Query node to get all nodes connected by at least one edge to the input node within GNBR",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "query",
           "name" : "entity1",
           "description" : "GNBR-ID for first entity",
-          "type" : "string"
-        }, {
-          "in" : "query",
-          "name" : "entity2",
-          "description" : "GNBR-ID for second entity",
           "type" : "string"
         } ],
         "responses" : {
