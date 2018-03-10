@@ -66,11 +66,13 @@
           "in" : "query",
           "name" : "entity1",
           "description" : "GNBR-ID for first entity",
+          "required" : true,
           "type" : "string"
         }, {
           "in" : "query",
           "name" : "entity2",
           "description" : "GNBR-ID for second entity",
+          "required" : true,
           "type" : "string"
         } ],
         "responses" : {
@@ -97,6 +99,7 @@
           "in" : "query",
           "name" : "entity1",
           "description" : "GNBR-ID for first entity",
+          "required" : true,
           "type" : "string"
         } ],
         "responses" : {
