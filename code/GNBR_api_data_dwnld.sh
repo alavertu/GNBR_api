@@ -15,21 +15,28 @@ cd $data_dir
 # Download GNBR theme data and entity mappings
 
 wget https://zenodo.org/record/1134693/files/part-i-chemical-disease-path-theme-distributions.txt -O ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt
+gzip ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt
 
 wget https://zenodo.org/record/1134693/files/part-i-chemical-gene-path-theme-distributions.txt -O ${GNBR_dir}/part-i-chemical-gene-path-theme-distributions.txt
+gzip ${GNBR_dir}/part-i-chemical-gene-path-theme-distributions.txt
 
 wget https://zenodo.org/record/1134693/files/part-i-gene-disease-path-theme-distributions.txt -O ${GNBR_dir}/part-i-gene-disease-path-theme-distributions.txt
+gzip ${GNBR_dir}/part-i-gene-disease-path-theme-distributions.txt
 
 wget https://zenodo.org/record/1134693/files/part-i-gene-gene-path-theme-distributions.txt -O ${GNBR_dir}/part-i-gene-gene-path-theme-distributions.txt
+gzip ${GNBR_dir}/part-i-gene-gene-path-theme-distributions.txt
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt -O ${GNBR_dir}/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt
+gzip ${GNBR_dir}/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt -O ${GNBR_dir}/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt
+gzip ${GNBR_dir}/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt -O ${GNBR_dir}/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt
+gzip ${GNBR_dir}/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt  -O ${GNBR_dir}/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt
-
+gzip ${GNBR_dir}/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt
 
 # Download CTD data
 
