@@ -202,7 +202,7 @@
             "example" : "MESH:D000068718"
           }
         },
-        "neighborhood" : {
+        "subgraph" : {
           "type" : "array",
           "items" : {
             "$ref" : "#/definitions/gnbrAssociation"
