@@ -111,6 +111,32 @@
           }
         }
       }
+    },
+    "/getInducedSubgraph" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "Get a GNBR subgraph",
+        "operationId" : "getSubgraph",
+        "description" : "Query a list of nodes to get the GNBR subgraph induced by those nodes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "entity1",
+          "description" : "GNBR-ID for first entity",
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/gnbrSubgraph"
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
     }
   },
   "definitions" : {
