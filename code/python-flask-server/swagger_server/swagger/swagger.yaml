@@ -1,0 +1,296 @@
+---
+swagger: "2.0"
+info:
+  description: "This API provides access to the relationships between entities in\
+    \ the global network of biomedical relationships (GNBR) derived from text"
+  version: "1.0.0"
+  title: "GNBR"
+  contact:
+    email: "alavertu@stanford.edu"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "virtserver.swaggerhub.com"
+basePath: "/NCATS_GNBR/GNBR_API/1.0.0"
+tags:
+- name: "admins"
+  description: "Secured Admin-only calls"
+- name: "developers"
+  description: "Operations available to regular developers"
+schemes:
+- "https"
+paths:
+  /findEntity:
+    get:
+      tags:
+      - "developers"
+      summary: "Find GNBR identifier"
+      description: "Searches entities within GNBR for a matching ID, based on input\
+        \ string"
+      operationId: "get_identifier"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "searchString"
+        in: "query"
+        description: "pass a search string to find matching identifiers"
+        required: true
+        type: "string"
+      - name: "limit"
+        in: "query"
+        description: "maximum number of records to return"
+        required: false
+        type: "integer"
+        maximum: 10.0
+        minimum: 0
+        format: "int32"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            $ref: "#/definitions/idMapping"
+        400:
+          description: "bad input parameter"
+      x-swagger-router-controller: "swagger_server.controllers.developers_controller"
+  /queryEdge:
+    get:
+      tags:
+      - "developers"
+      summary: "Query for an edge"
+      description: "Query for edges connecting two entities within GNBR"
+      operationId: "get_edge"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "entity1"
+        in: "query"
+        description: "GNBR-ID for first entity"
+        required: true
+        type: "string"
+      - name: "entity2"
+        in: "query"
+        description: "GNBR-ID for second entity"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            $ref: "#/definitions/gnbrEdge"
+        400:
+          description: "bad input parameter"
+      x-swagger-router-controller: "swagger_server.controllers.developers_controller"
+  /getNodeNeighbors:
+    get:
+      tags:
+      - "developers"
+      summary: "Get all neighbors of a particular node"
+      description: "Query node to get all nodes connected by at least one edge to\
+        \ the input node within GNBR"
+      operationId: "get_node_neighbors"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "entity1"
+        in: "query"
+        description: "GNBR-ID for first entity"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            $ref: "#/definitions/gnbrSubgraph"
+        400:
+          description: "bad input parameter"
+      x-swagger-router-controller: "swagger_server.controllers.developers_controller"
+  /getInducedSubgraph:
+    get:
+      tags:
+      - "developers"
+      summary: "Get a GNBR subgraph"
+      description: "Query a list of nodes to get the GNBR subgraph induced by those\
+        \ nodes"
+      operationId: "get_subgraph"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "seedNodes"
+        in: "query"
+        description: "gnbrIDs for subgraph"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            $ref: "#/definitions/gnbrSubgraph"
+        400:
+          description: "bad input parameter"
+      x-swagger-router-controller: "swagger_server.controllers.developers_controller"
+definitions:
+  idMapping:
+    type: "object"
+    required:
+    - "common_name"
+    - "is_medic"
+    properties:
+      common_name:
+        type: "string"
+        example: "rosuvastatin"
+      GNBR_entity:
+        $ref: "#/definitions/gnbrEntity"
+      is_medic:
+        type: "boolean"
+        example: true
+    example:
+      is_medic: true
+      GNBR_entity:
+        synonyms: ""
+        entityType: "chemical"
+        entityID: "MESH:D000068718"
+      common_name: "rosuvastatin"
+  gnbrEntity:
+    properties:
+      entityID:
+        type: "string"
+        example: "MESH:D000068718"
+      synonyms:
+        type: "array"
+        example: ""
+      entityType:
+        type: "string"
+        example: "chemical"
+    example:
+      synonyms: ""
+      entityType: "chemical"
+      entityID: "MESH:D000068718"
+  gnbrEdge:
+    required:
+    - "edge_score"
+    - "edge_type"
+    - "pubmed_id"
+    - "sentence"
+    properties:
+      edge_type:
+        type: "string"
+        example: "E+"
+      edge_label:
+        type: "string"
+        example: "increases expression/production"
+      edge_score:
+        type: "number"
+        example: 12.5
+      sentence:
+        type: "string"
+        example: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+          \ [LY335979], administered intravenously in combination with doxorubicin\
+          \ in patients with advanced malignancy."
+      pubmed_id:
+        type: "string"
+        example: "pubmed:23411283"
+    example:
+      sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+        \ [LY335979], administered intravenously in combination with doxorubicin in\
+        \ patients with advanced malignancy."
+      pubmed_id: "pubmed:23411283"
+      edge_score: 12.5
+      edge_type: "E+"
+      edge_label: "increases expression/production"
+  gnbrAssociation:
+    required:
+    - "association_score"
+    - "associations"
+    - "object_id"
+    - "subject_id"
+    properties:
+      subject_id:
+        type: "string"
+        example: "MESH:D000068718"
+      object_id:
+        type: "string"
+        example: "ncbigene:8291"
+      association_score:
+        type: "number"
+        example: 53.2
+      associations:
+        type: "array"
+        items:
+          $ref: "#/definitions/gnbrEdge"
+    example:
+      subject_id: "MESH:D000068718"
+      associations:
+      - sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+          \ [LY335979], administered intravenously in combination with doxorubicin\
+          \ in patients with advanced malignancy."
+        pubmed_id: "pubmed:23411283"
+        edge_score: 12.5
+        edge_type: "E+"
+        edge_label: "increases expression/production"
+      - sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+          \ [LY335979], administered intravenously in combination with doxorubicin\
+          \ in patients with advanced malignancy."
+        pubmed_id: "pubmed:23411283"
+        edge_score: 12.5
+        edge_type: "E+"
+        edge_label: "increases expression/production"
+      association_score: 53.2
+      object_id: "ncbigene:8291"
+  gnbrSubgraph:
+    required:
+    - "entity_ids"
+    - "subgraph"
+    properties:
+      entity_ids:
+        type: "array"
+        items:
+          type: "string"
+          example: "MESH:D000068718"
+      subgraph:
+        type: "array"
+        items:
+          $ref: "#/definitions/gnbrAssociation"
+    example:
+      subgraph:
+      - subject_id: "MESH:D000068718"
+        associations:
+        - sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+            \ [LY335979], administered intravenously in combination with doxorubicin\
+            \ in patients with advanced malignancy."
+          pubmed_id: "pubmed:23411283"
+          edge_score: 12.5
+          edge_type: "E+"
+          edge_label: "increases expression/production"
+        - sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+            \ [LY335979], administered intravenously in combination with doxorubicin\
+            \ in patients with advanced malignancy."
+          pubmed_id: "pubmed:23411283"
+          edge_score: 12.5
+          edge_type: "E+"
+          edge_label: "increases expression/production"
+        association_score: 53.2
+        object_id: "ncbigene:8291"
+      - subject_id: "MESH:D000068718"
+        associations:
+        - sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+            \ [LY335979], administered intravenously in combination with doxorubicin\
+            \ in patients with advanced malignancy."
+          pubmed_id: "pubmed:23411283"
+          edge_score: 12.5
+          edge_type: "E+"
+          edge_label: "increases expression/production"
+        - sentence: "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride\
+            \ [LY335979], administered intravenously in combination with doxorubicin\
+            \ in patients with advanced malignancy."
+          pubmed_id: "pubmed:23411283"
+          edge_score: 12.5
+          edge_type: "E+"
+          edge_label: "increases expression/production"
+        association_score: 53.2
+        object_id: "ncbigene:8291"
+      entity_ids:
+      - "MESH:D000068718"
+      - "MESH:D000068718"
