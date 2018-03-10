@@ -77,7 +77,7 @@
           "200" : {
             "description" : "search results matching criteria",
             "schema" : {
-              "$ref" : "#/definitions/idMapping"
+              "$ref" : "#/definitions/gnbrEdge"
             }
           },
           "400" : {
