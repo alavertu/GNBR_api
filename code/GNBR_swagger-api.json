@@ -20,12 +20,12 @@
     "description" : "Operations available to regular developers"
   } ],
   "paths" : {
-    "/find_entity" : {
+    "/findEntity" : {
       "get" : {
         "tags" : [ "developers" ],
-        "summary" : "searches entities within GNBR for a matching ID, based on input string",
+        "summary" : "Find GNBR identifier",
         "operationId" : "getIdentifier",
-        "description" : "Search for entity ids with GNBR\n",
+        "description" : "Searches entities within GNBR for a matching ID, based on input string",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "query",
@@ -46,10 +46,7 @@
           "200" : {
             "description" : "search results matching criteria",
             "schema" : {
-              "type" : "object",
-              "items" : {
-                "$ref" : "#/definitions/ID_mapping"
-              }
+              "$ref" : "#/definitions/idMapping"
             }
           },
           "400" : {
@@ -58,19 +55,88 @@
         }
       }
     },
-    "/query_edge" : {
+    "/queryEdge" : {
       "get" : {
         "tags" : [ "developers" ],
-        "summary" : "Query for edges connecting two entities with GNBR",
+        "summary" : "Query for an edge",
         "operationId" : "getEdge",
+        "description" : "Query for edges connecting two entities within GNBR",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "entity1",
+          "description" : "GNBR-ID for first entity",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "entity2",
+          "description" : "GNBR-ID for second entity",
+          "required" : true,
+          "type" : "string"
+        } ],
         "responses" : {
           "200" : {
             "description" : "search results matching criteria",
             "schema" : {
-              "type" : "object",
-              "items" : {
-                "$ref" : "#/definitions/ID_mapping"
-              }
+              "$ref" : "#/definitions/gnbrEdge"
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    },
+    "/getNodeNeighbors" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "Get all neighbors of a particular node",
+        "operationId" : "getNodeNeighbors",
+        "description" : "Query node to get all nodes connected by at least one edge to the input node within GNBR",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "entity1",
+          "description" : "GNBR-ID for first entity",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/gnbrSubgraph"
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    },
+    "/getInducedSubgraph" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "Get a GNBR subgraph",
+        "operationId" : "getSubgraph",
+        "description" : "Query a list of nodes to get the GNBR subgraph induced by those nodes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "required" : true,
+          "name" : "seedNodes",
+          "description" : "gnbrIDs for subgraph",
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/gnbrSubgraph"
             }
           },
           "400" : {
@@ -81,7 +147,7 @@
     }
   },
   "definitions" : {
-    "ID_mapping" : {
+    "idMapping" : {
       "type" : "object",
       "required" : [ "common_name", "GNBR_ID", "is_medic" ],
       "properties" : {
@@ -90,7 +156,7 @@
           "example" : "rosuvastatin"
         },
         "GNBR_entity" : {
-          "$ref" : "#/definitions/GNBR_entity"
+          "$ref" : "#/definitions/gnbrEntity"
         },
         "is_medic" : {
           "type" : "boolean",
@@ -98,10 +164,10 @@
         }
       }
     },
-    "GNBR_entity" : {
+    "gnbrEntity" : {
       "required" : [ "name" ],
       "properties" : {
-        "entity_ID" : {
+        "entityID" : {
           "type" : "string",
           "example" : "MESH:D000068718"
         },
@@ -109,9 +175,75 @@
           "type" : "array",
           "example" : [ "Rosuvastatin", "Crestor", "Calcium, Rosuvastatin" ]
         },
-        "entity_type" : {
+        "entityType" : {
           "type" : "string",
           "example" : "chemical"
+        }
+      }
+    },
+    "gnbrEdge" : {
+      "required" : [ "edge_type", "edge_score", "sentence", "pubmed_id" ],
+      "properties" : {
+        "edge_type" : {
+          "type" : "string",
+          "example" : "E+"
+        },
+        "edge_label" : {
+          "type" : "string",
+          "example" : "increases expression/production"
+        },
+        "edge_score" : {
+          "type" : "number",
+          "example" : 12.5
+        },
+        "sentence" : {
+          "type" : "string",
+          "example" : "A Phase I trial of a potent P-glycoprotein inhibitor, zosuquidar_trihydrochloride [LY335979], administered intravenously in combination with doxorubicin in patients with advanced malignancy."
+        },
+        "pubmed_id" : {
+          "type" : "string",
+          "example" : "pubmed:23411283"
+        }
+      }
+    },
+    "gnbrAssociation" : {
+      "required" : [ "subject_id", "object_id", "association_score", "associations" ],
+      "properties" : {
+        "subject_id" : {
+          "type" : "string",
+          "example" : "MESH:D000068718"
+        },
+        "object_id" : {
+          "type" : "string",
+          "example" : "ncbigene:8291"
+        },
+        "association_score" : {
+          "type" : "number",
+          "example" : 53.2
+        },
+        "associations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/gnbrEdge"
+          }
+        }
+      }
+    },
+    "gnbrSubgraph" : {
+      "required" : [ "entity_ids", "subgraph" ],
+      "properties" : {
+        "entity_ids" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "example" : "MESH:D000068718"
+          }
+        },
+        "subgraph" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/gnbrAssociation"
+          }
         }
       }
     }
