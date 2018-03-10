@@ -20,7 +20,7 @@
     "description" : "Operations available to regular developers"
   } ],
   "paths" : {
-    "/find_entity" : {
+    "/findEntity" : {
       "get" : {
         "tags" : [ "developers" ],
         "summary" : "Find GNBR identifier",
@@ -55,7 +55,7 @@
         }
       }
     },
-    "/query_edge" : {
+    "/queryEdge" : {
       "get" : {
         "tags" : [ "developers" ],
         "summary" : "Query for an edge",
