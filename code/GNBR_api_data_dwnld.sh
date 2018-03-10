@@ -10,8 +10,6 @@ CTD_dir=${base_data}"/CTD"
 mkdir -p ${base_data}"/pubtator"
 pub_dir=${base_data}"/pubtator"
 
-cd $data_dir
-
 # Download GNBR theme data and entity mappings
 
 wget https://zenodo.org/record/1134693/files/part-i-chemical-disease-path-theme-distributions.txt -O ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt
