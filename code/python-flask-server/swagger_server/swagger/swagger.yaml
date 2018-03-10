@@ -149,7 +149,10 @@ definitions:
     example:
       is_medic: true
       GNBR_entity:
-        synonyms: ""
+        synonyms:
+        - "Rosuvastatin"
+        - "Crestor"
+        - "Calcium, Rosuvastatin"
         entityType: "chemical"
         entityID: "MESH:D000068718"
       common_name: "rosuvastatin"
@@ -160,12 +163,20 @@ definitions:
         example: "MESH:D000068718"
       synonyms:
         type: "array"
-        example: ""
+        example:
+        - "Rosuvastatin"
+        - "Crestor"
+        - "Calcium, Rosuvastatin"
+        items:
+          type: "string"
       entityType:
         type: "string"
         example: "chemical"
     example:
-      synonyms: ""
+      synonyms:
+      - "Rosuvastatin"
+      - "Crestor"
+      - "Calcium, Rosuvastatin"
       entityType: "chemical"
       entityID: "MESH:D000068718"
   gnbrEdge:

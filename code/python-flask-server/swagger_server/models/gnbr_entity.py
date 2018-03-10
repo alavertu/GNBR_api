@@ -15,19 +15,19 @@ class GnbrEntity(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, entity_id: str=None, synonyms: List[ERRORUNKNOWN]=None, entity_type: str=None):  # noqa: E501
+    def __init__(self, entity_id: str=None, synonyms: List[str]=None, entity_type: str=None):  # noqa: E501
         """GnbrEntity - a model defined in Swagger
 
         :param entity_id: The entity_id of this GnbrEntity.  # noqa: E501
         :type entity_id: str
         :param synonyms: The synonyms of this GnbrEntity.  # noqa: E501
-        :type synonyms: List[ERRORUNKNOWN]
+        :type synonyms: List[str]
         :param entity_type: The entity_type of this GnbrEntity.  # noqa: E501
         :type entity_type: str
         """
         self.swagger_types = {
             'entity_id': str,
-            'synonyms': List[ERRORUNKNOWN],
+            'synonyms': List[str],
             'entity_type': str
         }
 
@@ -74,22 +74,22 @@ class GnbrEntity(Model):
         self._entity_id = entity_id
 
     @property
-    def synonyms(self) -> List[ERRORUNKNOWN]:
+    def synonyms(self) -> List[str]:
         """Gets the synonyms of this GnbrEntity.
 
 
         :return: The synonyms of this GnbrEntity.
-        :rtype: List[ERRORUNKNOWN]
+        :rtype: List[str]
         """
         return self._synonyms
 
     @synonyms.setter
-    def synonyms(self, synonyms: List[ERRORUNKNOWN]):
+    def synonyms(self, synonyms: List[str]):
         """Sets the synonyms of this GnbrEntity.
 
 
         :param synonyms: The synonyms of this GnbrEntity.
-        :type synonyms: List[ERRORUNKNOWN]
+        :type synonyms: List[str]
         """
 
         self._synonyms = synonyms
