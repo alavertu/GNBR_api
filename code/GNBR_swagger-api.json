@@ -97,7 +97,7 @@
           "example" : "rosuvastatin"
         },
         "GNBR_entity" : {
-          "$ref" : "#/definitions/GNBR_entity"
+          "$ref" : "#/definitions/gnbrEntity"
         },
         "is_medic" : {
           "type" : "boolean",
