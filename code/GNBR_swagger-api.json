@@ -145,7 +145,7 @@
         },
         "pubmed_id" : {
           "type" : "string",
-          "example" : "pubmed"
+          "example" : "pubmed:23411283"
         }
       }
     },
