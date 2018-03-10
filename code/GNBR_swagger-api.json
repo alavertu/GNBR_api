@@ -125,7 +125,7 @@
           "description" : "gnbrIDs for subgraph",
           "type" : "array",
           "items" : {
-            "type" : "string"
+            "type" : "#/definitions/gnbrEntity"
           }
         } ],
         "responses" : {
