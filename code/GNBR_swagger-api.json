@@ -85,6 +85,37 @@
           }
         }
       }
+    },
+    "/getNodeNeighbors" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "Query for an edge",
+        "operationId" : "getNodeNeighbors",
+        "description" : "Query for edges connecting two entities within GNBR",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "entity1",
+          "description" : "GNBR-ID for first entity",
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "entity2",
+          "description" : "GNBR-ID for second entity",
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "$ref" : "#/definitions/gnbrEdge"
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
     }
   },
   "definitions" : {
