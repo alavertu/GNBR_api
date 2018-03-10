@@ -192,12 +192,15 @@
         }
       }
     },
-    "gnbrNeighborhood" : {
-      "required" : [ "entity_id", "neighborhood" ],
+    "gnbrSubgraph" : {
+      "required" : [ "entity_ids", "subgraph" ],
       "properties" : {
-        "entity_id" : {
-          "type" : "string",
-          "example" : "MESH:D000068718"
+        "entity_ids" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "example" : "MESH:D000068718"
+          }
         },
         "neighborhood" : {
           "type" : "array",
