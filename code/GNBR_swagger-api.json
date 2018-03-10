@@ -1,3 +1,108 @@
 {
-  "swagger" : "2.0"
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This API provides access to the relationships between entities in the global network of biomedical relationships (GNBR) derived from text",
+    "version" : "1.0.0",
+    "title" : "GNBR",
+    "contact" : {
+      "email" : "alavertu@stanford.edu"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  } ],
+  "paths" : {
+    "/find_entity" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "searches entities within GNBR for a matching ID, based on input string",
+        "operationId" : "getIdentifier",
+        "description" : "Search for entity ids with GNBR\n",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "searchString",
+          "description" : "pass a search string to find matching identifiers",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "description" : "maximum number of records to return",
+          "type" : "integer",
+          "format" : "int32",
+          "minimum" : 0,
+          "maximum" : 10
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "type" : "object",
+              "items" : {
+                "$ref" : "#/definitions/ID_mapping"
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    },
+    "/query_edge" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "Query for edges connecting two entities with GNBR",
+        "operationId" : "getEdge"
+      }
+    }
+  },
+  "definitions" : {
+    "ID_mapping" : {
+      "type" : "object",
+      "required" : [ "common_name", "GNBR_ID", "is_medic" ],
+      "properties" : {
+        "common_name" : {
+          "type" : "string",
+          "example" : "rosuvastatin"
+        },
+        "GNBR_entity" : {
+          "$ref" : "#/definitions/GNBR_entity"
+        },
+        "is_medic" : {
+          "type" : "boolean",
+          "example" : true
+        }
+      }
+    },
+    "GNBR_entity" : {
+      "required" : [ "name" ],
+      "properties" : {
+        "entity_ID" : {
+          "type" : "string",
+          "example" : "MESH:D000068718"
+        },
+        "synonyms" : {
+          "type" : "array",
+          "example" : [ "Rosuvastatin", "Crestor", "Calcium, Rosuvastatin" ]
+        },
+        "entity_type" : {
+          "type" : "string",
+          "example" : "chemical"
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/NCATS_GNBR/GNBR_API/1.0.0",
+  "schemes" : [ "https" ]
 }
