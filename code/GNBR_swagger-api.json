@@ -62,7 +62,21 @@
       "get" : {
         "tags" : [ "developers" ],
         "summary" : "Query for edges connecting two entities with GNBR",
-        "operationId" : "getEdge"
+        "operationId" : "getEdge",
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "type" : "object",
+              "items" : {
+                "$ref" : "#/definitions/ID_mapping"
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
       }
     }
   },
