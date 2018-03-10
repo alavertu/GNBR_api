@@ -144,7 +144,7 @@
       }
     },
     "gnbrAssociation" : {
-      "required" : [ "subject_id", "object_id", "association_score" ],
+      "required" : [ "subject_id", "object_id", "association_score", "associations" ],
       "properties" : {
         "subject_id" : {
           "type" : "string",
@@ -157,6 +157,9 @@
         "association_score" : {
           "type" : "number",
           "example" : 53.2
+        },
+        "associations" : {
+          "$ref" : "#/definitions/gnbrEdge"
         }
       }
     }
