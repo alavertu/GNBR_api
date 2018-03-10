@@ -121,9 +121,12 @@
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "in" : "query",
-          "name" : "entity1",
-          "description" : "GNBR-ID for first entity",
-          "type" : "string"
+          "name" : "seedNodes",
+          "description" : "gnbrIDs for subgraph",
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
         } ],
         "responses" : {
           "200" : {
