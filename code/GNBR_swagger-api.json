@@ -173,6 +173,9 @@
         },
         "synonyms" : {
           "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
           "example" : [ "Rosuvastatin", "Crestor", "Calcium, Rosuvastatin" ]
         },
         "entityType" : {
