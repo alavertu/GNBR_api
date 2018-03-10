@@ -48,7 +48,7 @@
             "schema" : {
               "type" : "object",
               "items" : {
-                "$ref" : "#/definitions/ID_mapping"
+                "$ref" : "#/definitions/idMapping"
               }
             }
           },
@@ -82,7 +82,7 @@
             "schema" : {
               "type" : "object",
               "items" : {
-                "$ref" : "#/definitions/ID_mapping"
+                "$ref" : "#/definitions/gnbrEdge"
               }
             }
           },
@@ -94,7 +94,7 @@
     }
   },
   "definitions" : {
-    "ID_mapping" : {
+    "idMapping" : {
       "type" : "object",
       "required" : [ "common_name", "GNBR_ID", "is_medic" ],
       "properties" : {
@@ -141,7 +141,7 @@
         },
         "sentence" : {
           "type" : "string",
-          "example" : "A Phase I trial of a potent P-glycoprotein inhibitor,zosuquidar_trihydrochloride – LRB- LY335979 –RRB- , administered intravenously in combination with doxorubicin in patients with advanced malignancy."
+          "example" : null
         }
       }
     },
