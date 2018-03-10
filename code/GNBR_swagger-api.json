@@ -141,7 +141,7 @@
         },
         "sentence" : {
           "type" : "string",
-          "example" : null
+          "example" : "A Phase I trial of a potent P-glycoprotein inhibitor,zosuquidar_trihydrochloride – LRB- LY335979 –RRB- , administered intravenously in combination with doxorubicin in patients with advanced malignancy."
         }
       }
     },
