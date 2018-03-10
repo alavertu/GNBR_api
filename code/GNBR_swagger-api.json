@@ -186,6 +186,10 @@
       "properties" : {
         "edge_type" : {
           "type" : "string",
+          "example" : "E+"
+        },
+        "edge_label" : {
+          "type" : "string",
           "example" : "increases expression/production"
         },
         "edge_score" : {
