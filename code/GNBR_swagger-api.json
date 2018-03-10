@@ -129,6 +129,10 @@
         "sentence" : {
           "type" : "string",
           "example" : null
+        },
+        "pubmed_id" : {
+          "type" : "string",
+          "example" : "pubmed:23411283"
         }
       }
     },
