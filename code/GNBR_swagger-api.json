@@ -46,10 +46,7 @@
           "200" : {
             "description" : "search results matching criteria",
             "schema" : {
-              "type" : "object",
-              "items" : {
-                "$ref" : "#/definitions/ID_mapping"
-              }
+              "$ref" : "#/definitions/idMapping"
             }
           },
           "400" : {
@@ -80,7 +77,7 @@
           "200" : {
             "description" : "search results matching criteria",
             "schema" : {
-              "$ref" : "#/definitions/ID_mapping"
+              "$ref" : "#/definitions/idMapping"
             }
           },
           "400" : {
@@ -91,7 +88,7 @@
     }
   },
   "definitions" : {
-    "ID_mapping" : {
+    "idMapping" : {
       "type" : "object",
       "required" : [ "common_name", "GNBR_ID", "is_medic" ],
       "properties" : {
@@ -108,7 +105,7 @@
         }
       }
     },
-    "GNBR_entity" : {
+    "gnbrEntity" : {
       "required" : [ "name" ],
       "properties" : {
         "entity_ID" : {
