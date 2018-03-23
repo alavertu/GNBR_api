@@ -36,7 +36,7 @@ with gzip.open(depPathFile, "rt") as dpathIn:
         if info[8] == "null" or info[9] == "null":
             continue
         if "gene" in themeFile:
-            entity_pair = info[8] + "_" + "Entrez:" + info[9]
+            entity_pair = info[8] + "_" + "ncbigene:" + info[9]
         else:
             entity_pair = info[8] + "_" + info[9]
         dpKey = info[12].lower()
