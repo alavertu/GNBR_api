@@ -1,4 +1,4 @@
-certifi==2018.1.18
-psycopg2==2.7.4
+# python==3.6
+numpy==1.14.2
 
 
