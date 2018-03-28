@@ -1,1 +1,4 @@
+.DS_Store
+import.report
+neo4j/data/*
 data/*
