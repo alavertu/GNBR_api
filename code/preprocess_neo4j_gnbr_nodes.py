@@ -2,17 +2,18 @@ import json, sys, os, csv
 from os.path import join
 import shutil
 import time
+import numpy as np
 
 
 #################################################
 ############# DEFINE PATHS ######################
 #################################################
-DATA_DIR='../data/GNBR_extracted'
+# DATA_DIR='../data/GNBR_extracted'
 
 PROCESSED_DIR = '../data/GNBR_processed'
 if not os.path.isdir(PROCESSED_DIR):
     os.mkdirs(PROCESSED_DIR)
-print("data dir: ",DATA_DIR)
+# print("data dir: ",DATA_DIR)
 print("processed data dir: ",PROCESSED_DIR)
 
 # note the header for each of these files is:
@@ -53,23 +54,27 @@ diseases = open_csv(join(PROCESSED_DIR, 'diseases'),delimiter=',')
 chemicals = open_csv(join(PROCESSED_DIR, 'chemicals'),delimiter=',')
 
 
-genes.writerow([':ID(Gene)', 'raw', 'id',':LABEL'])
-diseases.writerow([':ID(Disease)', 'raw', 'id',':LABEL'])
-chemicals.writerow([':ID(Chemical)', 'raw', 'id',':LABEL'])
+genes.writerow(['formatted', 'raw', 'id:ID(Gene)',':LABEL'])
+diseases.writerow(['formatted', 'raw', 'id:ID(Disease)',':LABEL'])
+chemicals.writerow(['formatted', 'raw', 'id:ID(Chemical)',':LABEL'])
+# genes.writerow(['name', 'id:ID(Gene)',':LABEL'])
+# diseases.writerow(['name', 'id:ID(Disease)',':LABEL'])
+# chemicals.writerow(['name', 'id:ID(Chemical)',':LABEL'])
 
 
 #################################################
 ############# CREATE NODE FILES #################
 #################################################
 
-genes_dict = {}
-diseases_dict = {}
-chemicals_dict = {}
+# genes_dict = {}
+# diseases_dict = {}
+# chemicals_dict = {}
+all_dict = {'Gene': {}, 'Chemical': {}, 'Disease': {}}
 
-def process_file(file, genes_dict, diseases_dict, chemicals_dict):
+def process_file(file, all_dict): #genes_dict, diseases_dict, chemicals_dict):
     # take in path to file and add the genes to the set 
     with open(file, 'r', encoding='utf-8') as f:
-        reader = csv.reader((line.replace('\0','') for line in f), doublequote=True, escapechar='\\')
+        reader = csv.reader((line.replace('\0','') for line in f), doublequote=True, escapechar='\\') # get rid of null characters
         for i, line_arr in enumerate(reader):
             # print(line)
             # # line = line.decode('utf-8')
@@ -80,19 +85,35 @@ def process_file(file, genes_dict, diseases_dict, chemicals_dict):
                 pubmed_id, sentence_num, a_formatted, a_loc, b_formatted, b_loc, a_raw, b_raw, a_id, b_id, a_type, b_type, rel_path, rel_sentence = line_arr[:14]
                 # print(a_formatted, a_raw, a_id, a_type)
                 # pubmed_id, sentence_num, a_formatted, a_loc, b_formatted, b_loc, a_raw, b_raw, a_id, b_id, a_type, b_type, rel_path, rel_sentence = line.split('\t')
-                if a_type == 'Gene':
-                    genes_dict[a_formatted] = [a_formatted, a_raw, a_id, a_type]
-                elif a_type == 'Disease':
-                    diseases_dict[a_formatted] = [a_formatted, a_raw, a_id, a_type]
-                elif a_type == 'Chemical':
-                    chemicals_dict[a_formatted] = [a_formatted, a_raw, a_id, a_type]
+                if a_id in all_dict[a_type]:
+                    all_dict[a_type][a_id][0].append(a_formatted.lower())
+                    all_dict[a_type][a_id][1].append(a_raw.lower())
+                else:
+                    # all_dict[a_type][a_id] = [[a_raw.lower()], a_id, a_type]
+                    all_dict[a_type][a_id] = [[a_formatted.lower()], [a_raw.lower()], a_id, a_type]
+                if b_id in all_dict[b_type]:
+                    all_dict[b_type][b_id][0].append(b_formatted.lower())
+                    all_dict[b_type][b_id][1].append(b_raw.lower())
+                else:
+                    # all_dict[b_type][b_id] = [[b_raw.lower()], b_id, b_type]
+                    all_dict[b_type][b_id] = [[b_formatted.lower()], [b_raw.lower()], b_id, b_type]
 
-                if b_type == 'Gene':
-                    genes_dict[b_formatted] = [b_formatted, b_raw, b_id, b_type]
-                elif b_type == 'Disease':
-                    diseases_dict[b_formatted] = [b_formatted, b_raw, b_id, b_type]
-                elif b_type == 'Chemical':
-                    chemicals_dict[b_formatted] = [b_formatted, b_raw, b_id, b_type]
+
+
+                # if a_type == 'Gene':
+                #     if a_id not in genes_dict:
+                #     genes_dict[a_formatted] = [a_formatted, a_raw, a_id, a_type]
+                # elif a_type == 'Disease':
+                #     diseases_dict[a_formatted] = [a_formatted, a_raw, a_id, a_type]
+                # elif a_type == 'Chemical':
+                #     chemicals_dict[a_formatted] = [a_formatted, a_raw, a_id, a_type]
+
+                # if b_type == 'Gene':
+                #     genes_dict[b_formatted] = [b_formatted, b_raw, b_id, b_type]
+                # elif b_type == 'Disease':
+                #     diseases_dict[b_formatted] = [b_formatted, b_raw, b_id, b_type]
+                # elif b_type == 'Chemical':
+                #     chemicals_dict[b_formatted] = [b_formatted, b_raw, b_id, b_type]
 
             except Exception as e:
                 print('x',e)
@@ -100,32 +121,68 @@ def process_file(file, genes_dict, diseases_dict, chemicals_dict):
                     print('.',end='')
                 if i and i % 1000000 == 0:
                     print(i)
+                raise
             # #DEBUG
             # if i > 100:
             #     break
-        return genes_dict, diseases_dict, chemicals_dict
+
+
+
+    return all_dict #genes_dict, diseases_dict, chemicals_dict
+
 
 start_time = time.time()
-genes_dict, diseases_dict, chemicals_dict = process_file(chem_dis_file, genes_dict, diseases_dict, chemicals_dict)
+all_dict = process_file(chem_dis_file, all_dict)
 print("finished processing ", chem_dis_file, time.time() - start_time)
-genes_dict, diseases_dict, chemicals_dict = process_file(chem_gene_file, genes_dict, diseases_dict, chemicals_dict)
+all_dict = process_file(chem_gene_file, all_dict)
 print("finished processing ", chem_gene_file, time.time() - start_time)
-genes_dict, diseases_dict, chemicals_dict = process_file(gene_dis_file, genes_dict, diseases_dict, chemicals_dict)
+all_dict = process_file(gene_dis_file, all_dict)
 print("finished processing ", gene_dis_file, time.time() - start_time)
-genes_dict, diseases_dict, chemicals_dict = process_file(gene_gene_file, genes_dict, diseases_dict, chemicals_dict)
+all_dict = process_file(gene_gene_file, all_dict)
 print("finished processing ", gene_gene_file, time.time() - start_time)
-# genes_dict, diseases_dict, chemicals_dict = process_file(test_file, genes_dict, diseases_dict, chemicals_dict)
+
+
+# iterate through dictionaries and only keep unique names (formatted and raw) and create a string representation with a delimiter between the two
+# note: only take the first
+delimiter='|'
+for dtype in all_dict:
+    for given_id in all_dict[dtype]:
+        all_dict[dtype][given_id][0] = delimiter.join(list(np.unique(all_dict[dtype][given_id][0])))
+        all_dict[dtype][given_id][1] = delimiter.join(list(np.unique(all_dict[dtype][given_id][1])))
+
 
 # writing [name, raw, idx, dtype]
-print(len(genes_dict), 'unique genes')
-for arr in genes_dict.values():
+print(len(all_dict['Gene']), 'unique genes')
+for arr in all_dict['Gene'].values():
     genes.writerow(arr)
-print(len(diseases_dict), 'unique diseases')
-for arr in chemicals_dict.values():
+print(len(all_dict['Chemical']), 'unique chemicals')
+for arr in all_dict['Chemical'].values():
     chemicals.writerow(arr)
-print(len(chemicals_dict), 'unique chemicals')
-for arr in diseases_dict.values():
+print(len(all_dict['Disease']), 'unique diseases')
+for arr in all_dict['Disease'].values():
     diseases.writerow(arr)
+
+# start_time = time.time()
+# genes_dict, diseases_dict, chemicals_dict = process_file(chem_dis_file, genes_dict, diseases_dict, chemicals_dict)
+# print("finished processing ", chem_dis_file, time.time() - start_time)
+# genes_dict, diseases_dict, chemicals_dict = process_file(chem_gene_file, genes_dict, diseases_dict, chemicals_dict)
+# print("finished processing ", chem_gene_file, time.time() - start_time)
+# genes_dict, diseases_dict, chemicals_dict = process_file(gene_dis_file, genes_dict, diseases_dict, chemicals_dict)
+# print("finished processing ", gene_dis_file, time.time() - start_time)
+# genes_dict, diseases_dict, chemicals_dict = process_file(gene_gene_file, genes_dict, diseases_dict, chemicals_dict)
+# print("finished processing ", gene_gene_file, time.time() - start_time)
+# # genes_dict, diseases_dict, chemicals_dict = process_file(test_file, genes_dict, diseases_dict, chemicals_dict)
+
+# # writing [name, raw, idx, dtype]
+# print(len(genes_dict), 'unique genes')
+# for arr in genes_dict.values():
+#     genes.writerow(arr)
+# print(len(diseases_dict), 'unique diseases')
+# for arr in chemicals_dict.values():
+#     chemicals.writerow(arr)
+# print(len(chemicals_dict), 'unique chemicals')
+# for arr in diseases_dict.values():
+#     diseases.writerow(arr)
 
 print('finished writing node files')
 # #################################################

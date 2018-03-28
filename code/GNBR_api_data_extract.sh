@@ -1,3 +1,4 @@
+# extract data from gzip into another directory (no longer used)
 base_data="../data"
 
 mkdir -p ${base_data}"/GNBR"
