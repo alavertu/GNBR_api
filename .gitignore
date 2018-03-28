@@ -1,4 +1,5 @@
 .DS_Store
+neo4j
 import.report
 neo4j/data/*
 *logfile*
