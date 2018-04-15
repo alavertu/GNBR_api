@@ -36,12 +36,11 @@ with gzip.open(depPathFile, "rt") as dpathIn:
         if info[8] == "null" or info[9] == "null":
             continue
         if "gene" in themeFile:
-            if "MESH:" in info[8]:
-                entity_pair = info[8] + "_" + "ncbigene:" + info[9]
-            else:
-                entity_pair = "ncbigene:" + info[8] + "_" + info[9]
-        else:
-            entity_pair = info[8] + "_" + info[9]
+            if "MESH:" not in info[8]:
+                info[8] = "ncbigene:" + info[8]
+            if "MESH:" not in info[9]:
+                info[9] = "ncbigene:" + info[9]
+        entity_pair = info[8] + "_" + info[9]
         dpKey = info[12].lower()
         if entity_pair in netOut:
             temp = netOut[entity_pair]
