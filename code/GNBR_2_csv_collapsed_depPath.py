@@ -26,7 +26,7 @@ with gzip.open(themeFile, "rt") as themeIn:
 # Create the output header for the themes
 outThemeHeader = [x.lower().replace(" ", "_") for x in depDict["header"]][1:]
 
-# Generate the output final output file as we iterate of the part-ii file
+# Generate the output final output file as we iterate over the part-ii file
 netOut = dict()
 with gzip.open(depPathFile, "rt") as dpathIn:
     i = 0
@@ -35,6 +35,7 @@ with gzip.open(depPathFile, "rt") as dpathIn:
         # Omit entry if either entity is missing an identifier
         if info[8] == "null" or info[9] == "null":
             continue
+        # prepend ncbigene prefix to genes, for data provinence 
         if "gene" in themeFile:
             if "MESH:" not in info[8]:
                 info[8] = "ncbigene:" + info[8]
@@ -47,12 +48,14 @@ with gzip.open(depPathFile, "rt") as dpathIn:
             netOut[entity_pair] = np.add(temp, depDict.get(dpKey))
         else:
             netOut[entity_pair] = depDict.get(dpKey)
-        
+
+# Write the final output to a file
 with open(outFile, "w+") as outCsv:
     header = ["entity1", "entity2", "species"] + outThemeHeader
     outCsv.write(",".join(header)+ "\n")
     for key in netOut:
         info = key.split("_")
+        # Check if gene study was done in another species, if so note the species
         if "(Tax:" in info[0]:
             temp = info[0].split("(")
             info[0] = temp[0]
@@ -66,7 +69,6 @@ with open(outFile, "w+") as outCsv:
         info = info + [species] + list(map(int, netOut.get(key).tolist()))
         # Write joined file values to file
         outCsv.write(",".join('"{0}"'.format(x) for x in info) + "\n")
-# Create the output header for the dependency graph data
 
 
 
