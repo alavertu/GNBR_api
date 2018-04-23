@@ -35,6 +35,9 @@ with gzip.open(depPathFile, "rt") as dpathIn:
         # Omit entry if either entity is missing an identifier
         if info[8] == "null" or info[9] == "null":
             continue
+        # GNBR uses ";" to mark unresolved entities, so we exclude these from our database`
+        if ";" in info[8] or ";" in info[9]:
+                continue
         # prepend ncbigene prefix to genes, for data provinence 
         if "gene" in themeFile:
             if "MESH:" not in info[8]:
