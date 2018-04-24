@@ -54,7 +54,8 @@ with gzip.open(depPathFile, "rt") as dpathIn:
 
 # Write the final output to a file
 with open(outFile, "w+") as outCsv:
-    header = ["entity1", "entity2", "species"] + outThemeHeader
+    # header = ["entity1", "entity2", "species"] + outThemeHeader (REPLACED WITH LINE BELOW)
+    header = [":START(Entity-ID)", ":END(Entity-ID)"] + outThemeHeader.replace('.ind', '_ind')
     outCsv.write(",".join(header)+ "\n")
     for key in netOut:
         info = key.split("_")
@@ -69,7 +70,8 @@ with open(outFile, "w+") as outCsv:
             species = temp[1].strip("Tax:").strip(")")   
         else:
             species = "9606"
-        info = info + [species] + list(map(int, netOut.get(key).tolist()))
+        # info = info + [species] + list(map(int, netOut.get(key).tolist())) (REPLACED WITH LINE BELOW)
+        info = info + list(map(int, netOut.get(key).tolist()))
         # Write joined file values to file
         outCsv.write(",".join('"{0}"'.format(x) for x in info) + "\n")
 
