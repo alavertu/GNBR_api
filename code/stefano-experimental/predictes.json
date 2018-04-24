@@ -1,0 +1,35 @@
+{ 
+	"predicate_map" :{
+		"E"  : "regulates", 
+		"Rg" : "regulates",
+		"V+" : "positively_regulates",
+	  	"E+" : "positively_regulates",
+		"W"  : "positively_regulates",
+		"A+" : "positively_regulates",
+		"A-" : "negaitvely_regulates",
+		"E-" : "negaitvely_regulates",
+		"N"  : "negaitvely_regulates",
+		"B"  : "directly_interacts_with",
+		"I"  : "in_pathway_with",
+		"H"  : "in_complex_with",
+		"Q"  : "in_cell_population_with",
+		"U"  : "causes_or_contributes_to",
+		"Ud" : "causes_or_contributes_to",
+		"J"  : "causes_or_contributes_to",
+		"G"  : "causes_or_contributes_to",
+		"Y"  : "affects_risk_for",
+		"L"  : "correlates_with",
+		"X"  : "correlates_with",
+		"D"  : "is_therapeutic_target_for",
+		"Sa" : "causes",
+		"K"  : "contributes_to",
+		"T"  : "treats",
+		"C"  : "treats",
+		"Pa" : "treats",
+		"Te" : "treats",
+		"Pr" : "prevents",
+		"Md" : "has_biomarker",
+		"Mp" : "has_biomarker"
+   
+	}
+}
