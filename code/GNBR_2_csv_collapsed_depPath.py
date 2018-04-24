@@ -55,7 +55,7 @@ with gzip.open(depPathFile, "rt") as dpathIn:
 # Write the final output to a file
 with open(outFile, "w+") as outCsv:
     # header = ["entity1", "entity2", "species"] + outThemeHeader (REPLACED WITH LINE BELOW)
-    header = [":START(Entity-ID)", ":END(Entity-ID)"] + outThemeHeader.replace('.ind', '_ind')
+    header = [":START(Entity-ID)", ":END(Entity-ID)"] + outThemeHeader.replace('.ind', '_ind:float')
     outCsv.write(",".join(header)+ "\n")
     for key in netOut:
         info = key.split("_")
