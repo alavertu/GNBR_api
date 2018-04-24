@@ -24,7 +24,7 @@ with gzip.open(themeFile, "rt") as themeIn:
 
 
 # Create the output header for the themes
-outThemeHeader = [x.lower().replace(" ", "_") for x in depDict["header"]][1:]
+outThemeHeader = [x.lower().replace(" ", "_").replace('.ind', '_ind') + ':float' for x in depDict["header"]][1:]
 
 # Generate the output final output file as we iterate over the part-ii file
 netOut = dict()
@@ -55,7 +55,7 @@ with gzip.open(depPathFile, "rt") as dpathIn:
 # Write the final output to a file
 with open(outFile, "w+") as outCsv:
     # header = ["entity1", "entity2", "species"] + outThemeHeader (REPLACED WITH LINE BELOW)
-    header = [":START(Entity-ID)", ":END(Entity-ID)"] + outThemeHeader.replace('.ind', '_ind:float')
+    header = [":START(Entity-ID)", ":END(Entity-ID)"] + outThemeHeader
     outCsv.write(",".join(header)+ "\n")
     for key in netOut:
         info = key.split("_")
