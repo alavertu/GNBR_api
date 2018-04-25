@@ -4,13 +4,12 @@ import shutil
 import time
 import numpy as np
 
-
 #################################################
 ############# DEFINE PATHS ######################
 #################################################
-# DATA_DIR='../data/GNBR_extracted'
+DATA_DIR='../data/GNBR/'
 
-PROCESSED_DIR = '../data/GNBR_processed'
+PROCESSED_DIR = '../data/neo4J/import/'
 if not os.path.isdir(PROCESSED_DIR):
     os.mkdirs(PROCESSED_DIR)
 # print("data dir: ",DATA_DIR)
@@ -20,7 +19,7 @@ print("processed data dir: ",PROCESSED_DIR)
 ## pubmed_id   sentence_num    entity_a_formatted  entity_a_loc    entity_b_formatted  entity_b_loc    entity_a_raw    entity_b_raw    entity_a_id entity_b_id entity_a_type   entity_b_type   rel_path    rel_sentence
 
 # chem_dis_file = join(DATA_DIR, 'part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt')
-# chem_gene_file = join(DATA_DIR, 'part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt')
+chem_gene_file = join(DATA_DIR, 'part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt')
 # gene_dis_file = join(DATA_DIR, 'part-ii-dependency-paths-gene-disease-sorted-with-themes.txt')
 # gene_gene_file = join(DATA_DIR, 'part-ii-dependency-paths-gene-gene-sorted-with-themes.txt')
 # test_file = join(DATA_DIR, 'part-ii-chem-gene-test.txt')
@@ -28,11 +27,11 @@ print("processed data dir: ",PROCESSED_DIR)
 
 # use the newly extracted relationship files
 
-chem_dis_file = join(PROCESSED_DIR, 'chem_dis_rel.csv')
+# chem_dis_file = join(PROCESSED_DIR, 'chem_dis_rel.csv')
 chem_gene_file = join(PROCESSED_DIR, 'chem_gene_rel.csv')
-gene_dis_file = join(PROCESSED_DIR, 'gene_dis_rel.csv')
-gene_gene_file = join(PROCESSED_DIR, 'gene_gene_rel.csv')
-test_file = join(PROCESSED_DIR, 'part-ii-chem-gene-test.txt')
+# gene_dis_file = join(PROCESSED_DIR, 'gene_dis_rel.csv')
+# gene_gene_file = join(PROCESSED_DIR, 'gene_gene_rel.csv')
+# test_file = join(PROCESSED_DIR, 'part-ii-chem-gene-test.txt')
 
 
 # def clean(x):
@@ -54,9 +53,9 @@ diseases = open_csv(join(PROCESSED_DIR, 'diseases'),delimiter=',')
 chemicals = open_csv(join(PROCESSED_DIR, 'chemicals'),delimiter=',')
 
 
-genes.writerow(['formatted', 'raw', 'id:ID(Gene)',':LABEL'])
-diseases.writerow(['formatted', 'raw', 'id:ID(Disease)',':LABEL'])
-chemicals.writerow(['formatted', 'raw', 'id:ID(Chemical)',':LABEL'])
+genes.writerow(['formatted', 'raw', 'id:ID(Entity-ID)',':LABEL'])
+diseases.writerow(['formatted', 'raw', 'id:ID(Entity-ID)',':LABEL'])
+chemicals.writerow(['formatted', 'raw', 'id:ID(Entity-ID)',':LABEL'])
 # genes.writerow(['name', 'id:ID(Gene)',':LABEL'])
 # diseases.writerow(['name', 'id:ID(Disease)',':LABEL'])
 # chemicals.writerow(['name', 'id:ID(Chemical)',':LABEL'])
@@ -132,14 +131,14 @@ def process_file(file, all_dict): #genes_dict, diseases_dict, chemicals_dict):
 
 
 start_time = time.time()
-all_dict = process_file(chem_dis_file, all_dict)
-print("finished processing ", chem_dis_file, time.time() - start_time)
+# all_dict = process_file(chem_dis_file, all_dict)
+# print("finished processing ", chem_dis_file, time.time() - start_time)
 all_dict = process_file(chem_gene_file, all_dict)
 print("finished processing ", chem_gene_file, time.time() - start_time)
-all_dict = process_file(gene_dis_file, all_dict)
-print("finished processing ", gene_dis_file, time.time() - start_time)
-all_dict = process_file(gene_gene_file, all_dict)
-print("finished processing ", gene_gene_file, time.time() - start_time)
+# all_dict = process_file(gene_dis_file, all_dict)
+# print("finished processing ", gene_dis_file, time.time() - start_time)
+# all_dict = process_file(gene_gene_file, all_dict)
+# print("finished processing ", gene_gene_file, time.time() - start_time)
 
 
 # iterate through dictionaries and only keep unique names (formatted and raw) and create a string representation with a delimiter between the two
