@@ -60,7 +60,7 @@ for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
     # Write the final output to a file
     with open(outFile, "w") as outCsv:
         # header = ["entity1", "entity2", "species"] + outThemeHeader (REPLACED WITH LINE BELOW)
-        header = [":START_ID(Entity-ID)", ":END_ID(Entity-ID)"] + outThemeHeader + ['max_count:int', 'max_code', 'verified']
+        header = [":START(Entity-ID)", ":END(Entity-ID)"] + outThemeHeader + ['max_code','max_count', 'verified']
         outCsv.write(",".join(header)+ "\n")
         for key in netOut:
             info = key.split("_")

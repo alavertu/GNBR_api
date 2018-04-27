@@ -16,10 +16,14 @@ header = [
     "path", "text"
     ]
 
+out_header = [':ID(Path-ID)', ':LABEL', 'path']
+id_fields = ['path']
+label_fields = ['subj_type', 'obj_type']
+
 # Check input and print usage if number of arguments is invalid
 if len(sys.argv) != 3:
 	print("Error: wrong number of arguments, check usage statement below:\n")
-	print("USAGE: python GNBR_2_csv.py <path/to/part-i-file> <path/to/flattened-graph-outfile-header.csv> <path/to/flattened-graph-outfile.csv>")
+	print("USAGE: python GNBR_2_csv.py <path/to/part-i-files> <path/to/flattened-graph-outfile.csv>")
 	exit()
 
 # Handy helper functions
@@ -27,8 +31,7 @@ def filepath( filename ):
     return import_dir+'/'+filename 
 
 def open_csv(name, delimiter=','):
-    return csv.writer(open('{}'.format(name), 'w'), doublequote=True, delimiter=delimiter, escapechar='\\')
-
+    return csv.writer(gzip.open('{}'.format(name), 'wt'), doublequote=True, delimiter=delimiter, escapechar='\\')
 
 def hash_md5(array):
     return hashlib.md5( ''.join(array).encode() ).hexdigest()
@@ -46,7 +49,7 @@ themeFiles = sorted([f for f in os.listdir(import_dir) if '-i-' in f])
 depPathFiles = sorted([f for f in os.listdir(import_dir) if '-ii-' in f])
 
 # Generate output filename for each pair 
-outFiles = [outName + '_%i.csv' %i  for i in range(len(themeFiles))]
+outFiles = [outName + '_%i.csv.gz' %i  for i in range(len(themeFiles))]
 
 
 print('processing', sys.argv)
@@ -60,11 +63,11 @@ for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
         depDict["header"] = themeIn.readline().decode('utf-8').strip().split("\t")
         for line in themeIn.readlines():
             info = line.decode('utf-8').strip().split("\t")
-            depDict[info[0]] = info
+            depDict[info[0]] = map(float, info[1:])
 
     # Dynamically create output header for neo4j import.
-    outThemeHeader = [x.lower().replace(" ", "_").replace('.ind', '_ind') + ':float' for x in depDict["header"]][1:]
-    outThemeHeader = ['path_id:ID(Path-ID)', ':LABEL', 'path'] + outThemeHeader
+    dynamic_header = [x.lower().replace(" ", "_").replace('.ind', '_ind') + ':int' for x in depDict["header"]][1:]
+    outThemeHeader = out_header + dynamic_header
 
     # Generate the output final output file as we iterate of the part-ii file
     outCSV = open_csv(outFile)
@@ -87,14 +90,14 @@ for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
                 if dpKey in depDict.keys():
 
                     # Use md5 hashes of path|type1|type2 unique id
-                    types = sorted( get_fields(info, ['subj_type', 'obj_type'], header) )
-                    path_id = hash_md5( get_fields(info, ['path'], header) + types )
+                    labels = sorted( get_fields(info, label_fields, header) )
+                    path_id = hash_md5( get_fields(info, id_fields, header) + labels )
 
                     # Check if duplicate id and output id, label, path, and distribution. 
                     if path_id not in netOut:
-                        info_out = depDict.get(dpKey)
-                        label = '|'.join(types)
-                        outCSV.writerow( [path_id, label] + info_out ) 
+                        info_out = list( map(int, depDict.get(dpKey)) )
+                        label = '|'.join(labels)
+                        outCSV.writerow( [path_id, label, dpKey] + info_out ) 
                         netOut.add( path_id )
                 else:
                     print("ERROR: MISSING ENTRY")

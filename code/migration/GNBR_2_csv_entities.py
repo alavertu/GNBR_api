@@ -1,5 +1,4 @@
 import time
-import hashlib
 import gzip
 import sys
 import csv
@@ -11,7 +10,7 @@ if len(sys.argv) != 3:
 	print("USAGE: python GNBR_2_csv.py <path/to/part-ii-files> <path/to/outfile.csv>")
 	exit()
 
-# Define input header.  Output header generated dynamically.
+# Define input and output headers.
 header = [
     "pmid", "loc", 
     "subj_name", "subj_loc", 
@@ -22,24 +21,27 @@ header = [
     "path", "text"
     ] 
 
+out_header = [':ID(Entity-ID)', 'name', ':LABEL']
+
+
 # Handy subroutines
 def filepath( filename ):
     return import_dir+'/'+filename 
 
-def hash_md5(array):
-    return hashlib.md5( ''.join(array).encode() ).hexdigest()
-
 def open_csv(name, delimiter=','):
-    return csv.writer(open('{}'.format(name), 'w'), doublequote=True, delimiter=delimiter, escapechar='\\')
+    return csv.writer(gzip.open('{}'.format(name), 'wt'), doublequote=True, delimiter=delimiter, escapechar='\\')
 
 def get_fields(line, fields, header):
     extractor = dict( zip(header, line) )
     return [extractor[i] for i in fields]
 
-# Get file info from arguments
+# Assign input files to their variables
 import_dir = sys.argv[1]
 depPathFiles = [f for f in os.listdir(import_dir) if '-ii-' in f]
 outFile = sys.argv[2]
+
+
+
 
 # Generate the output final output file as we iterate of the part-ii file
 start_time = time.time()
@@ -56,6 +58,7 @@ for depPathFile in depPathFiles:
                 # Omit entry if either entity is missing an identifier
                 if info[8] == "null" or info[9] == "null":
                     continue
+
                 # Strip tax id from genes and store separately
                 if "(Tax:" in info[9]:
                     temp = info[9].split("(")
@@ -67,30 +70,24 @@ for depPathFile in depPathFiles:
                     species = temp[1].strip("Tax:").strip(")")   
                 else:
                     species = "9606"
-
-                # Add curie stem to genes
                 if "gene" in depPathFile:
                     if ":" not in info[8]:
                         info[8] = "ncbigene:" + info[8]
                     if ":" not in info[9]:
                         info[9] = "ncbigene:" + info[9]
 
-                # Use md5 hash of sentence as unique id
-                sentence_id = hash_md5( get_fields( info, ['text'], header ) )
-
-                # Output entity_id, sentence_id for entity 1
-                subj_id = get_fields( info, ['subj_id'], header )
-                subj_out = tuple( subj_id + [sentence_id] ) 
-                if subj_out not in netOut:
+                # Output entity 1 info if not duplicate
+                subj_out = get_fields( info, ['subj_id', 'subj_name', 'subj_type'], header )
+                if subj_out[0] not in netOut:
                     outCSV.writerow( subj_out )
-                    netOut.add( subj_out )
+                    netOut.add( subj_out[0] )
 
-                # Output entity_id, sentence_id for entity 2
-                obj_id = get_fields( info, ['obj_id'], header )
-                obj_out = tuple( obj_id + [sentence_id] )
-                if obj_out not in netOut:
+                # Output entity 2 info if not duplicate
+                obj_out = get_fields( info, ['obj_id', 'obj_name', 'obj_type'], header )
+                if obj_out[0] not in netOut:
                     outCSV.writerow( obj_out )
-                    netOut.add( obj_out )
+                    netOut.add( obj_out[0] )
+
             except:
                 print(':( ...', info)
                 raise
