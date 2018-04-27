@@ -76,7 +76,7 @@ with open(depPathFile, "r") as dpathIn:
         info[12] = info[12].lower()
 
         # Add in species as separate column
-        info = info[:13] + [species] + info[13:]
+        info = info[:12] + [species] + info[12:]
 
         # Write cleaned line to file
         out_partii_CSV.writerow(info)
