@@ -13,7 +13,7 @@ from gnbr_parse_utils import *
 # Check input and print usage if number of arguments is invalid
 if len(sys.argv) != 3:
     print("Error: wrong number of arguments, check usage statement below:\n")
-    print("USAGE: python GNBR_2_csv.py <path/to/part-i-file.gz> <path/to/cleaned-outfile.csv.gz>")
+    print("USAGE: python GNBR_2_csv.py <path/to/part-i-file.txt> <path/to/cleaned-outfile.csv.gz>")
     exit()
 
 # Assign input file paths to their variables
@@ -23,7 +23,7 @@ outFile = sys.argv[2]
 # Open buffer to out csv file
 out_parti_CSV=open_csv(outFile)
 
-with gzip.open(themeFile, "rt") as themeIn:
+with open(themeFile, "r") as themeIn:
 
     # Extract raw header from the part-i file
     raw_header = themeIn.readline().strip().split("\t")

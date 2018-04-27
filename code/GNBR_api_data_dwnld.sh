@@ -12,29 +12,46 @@ pub_dir=${base_data}"/pubtator"
 
 # Download GNBR theme data and entity mappings
 
+############ PART 1 DATA
 wget https://zenodo.org/record/1134693/files/part-i-chemical-disease-path-theme-distributions.txt -O ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt
-gzip ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt
+python GNBR_clean_part_i_files.py ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt ${GNBR_dir}/part_i_chemical_disease_cleaned.csv.gz
+rm ${GNBR_dir}/part-i-chemical-disease-path-theme-distributions.txt
+
 
 wget https://zenodo.org/record/1134693/files/part-i-chemical-gene-path-theme-distributions.txt -O ${GNBR_dir}/part-i-chemical-gene-path-theme-distributions.txt
-gzip ${GNBR_dir}/part-i-chemical-gene-path-theme-distributions.txt
+python GNBR_clean_part_i_files.py ${GNBR_dir}/part-i-chemical-gene-path-theme-distributions.txt ${GNBR_dir}/part_i_chemical_gene_cleaned.csv.gz
+rm ${GNBR_dir}/part-i-chemical-gene-path-theme-distributions.txt
+
 
 wget https://zenodo.org/record/1134693/files/part-i-gene-disease-path-theme-distributions.txt -O ${GNBR_dir}/part-i-gene-disease-path-theme-distributions.txt
-gzip ${GNBR_dir}/part-i-gene-disease-path-theme-distributions.txt
+python GNBR_clean_part_i_files.py ${GNBR_dir}/part-i-gene-disease-path-theme-distributions.txt ${GNBR_dir}/part_i_gene_disease_cleaned.csv.gz
+rm ${GNBR_dir}/part-i-gene-disease-path-theme-distributions.txt
+
 
 wget https://zenodo.org/record/1134693/files/part-i-gene-gene-path-theme-distributions.txt -O ${GNBR_dir}/part-i-gene-gene-path-theme-distributions.txt
-gzip ${GNBR_dir}/part-i-gene-gene-path-theme-distributions.txt
+python GNBR_clean_part_i_files.py ${GNBR_dir}/part-i-gene-gene-path-theme-distributions.txt ${GNBR_dir}/part_i_gene_gene_cleaned.csv.gz
+rm ${GNBR_dir}/part-i-gene-gene-path-theme-distributions.txt
 
+############# PART 2 DATA
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt -O ${GNBR_dir}/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt
-gzip ${GNBR_dir}/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt
+python GNBR_clean_part_ii_files.py ${GNBR_dir}/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt ${GNBR_dir}/part_ii_chemical_disease_cleaned.csv.gz
+rm ${GNBR_dir}/part-ii-dependency-paths-chemical-disease-sorted-with-themes.txt
+
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt -O ${GNBR_dir}/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt
-gzip ${GNBR_dir}/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt
+python GNBR_clean_part_ii_files.py ${GNBR_dir}/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt ${GNBR_dir}/part_ii_chemical_gene_cleaned.csv.gz
+rm ${GNBR_dir}/part-ii-dependency-paths-chemical-gene-sorted-with-themes.txt
+
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt -O ${GNBR_dir}/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt
-gzip ${GNBR_dir}/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt
+python GNBR_clean_part_ii_files.py ${GNBR_dir}/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt ${GNBR_dir}/part_ii_gene_disease_cleaned.csv.gz
+rm ${GNBR_dir}/part-ii-dependency-paths-gene-disease-sorted-with-themes.txt
+
 
 wget https://zenodo.org/record/1134693/files/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt  -O ${GNBR_dir}/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt
-gzip ${GNBR_dir}/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt
+python GNBR_clean_part_ii_files.py ${GNBR_dir}/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt ${GNBR_dir}/part_ii_gene_gene_cleaned.csv.gz
+rm ${GNBR_dir}/part-ii-dependency-paths-gene-gene-sorted-with-themes.txt
+
 
 # Download CTD data
 

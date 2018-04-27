@@ -13,7 +13,7 @@ from gnbr_parse_utils import *
 # Check input and print usage if number of arguments is invalid
 if len(sys.argv) != 3:
 	print("Error: wrong number of arguments, check usage statement below:\n")
-	print("USAGE: python GNBR_2_csv.py <path/to/part-ii-file.gz> <path/to/cleaned-outfile.csv.gz>")
+	print("USAGE: python GNBR_2_csv.py <path/to/part-ii-file.txt> <path/to/cleaned-outfile.csv.gz>")
 	exit()
 
 # Assign input file paths to their variables
@@ -38,7 +38,7 @@ out_partii_CSV=open_csv(outFile)
 out_partii_CSV.writerow(part_ii_header)
 
 # Iterate over file lines and clean the data
-with gzip.open(depPathFile, "rt") as dpathIn:
+with open(depPathFile, "r") as dpathIn:
     for line in dpathIn.readlines():
         info = line.strip().split("\t")
 
@@ -67,7 +67,7 @@ with gzip.open(depPathFile, "rt") as dpathIn:
                 temp = info[8].split("(")
                 info[8] = temp[0]
                 species = temp[1].strip("Tax:").strip(")")
-                
+
             else:
                 species = "9606"
         else:
