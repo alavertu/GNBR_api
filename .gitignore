@@ -5,3 +5,4 @@ neo4j/data/*
 *logfile*
 data/*
 env/*
+__pycache__/*
