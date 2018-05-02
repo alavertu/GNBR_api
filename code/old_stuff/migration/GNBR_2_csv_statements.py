@@ -1,6 +1,5 @@
 import time
 import gzip
-# from utils import filepath
 import sys
 import numpy as np
 import os
@@ -8,7 +7,7 @@ import os
 # Check input and print usage if number of arguments is invalid
 if len(sys.argv) != 3:
 	print("Error: wrong number of arguments, check usage statement below:\n")
-	print("USAGE: python GNBR_2_csv.py <path/to/import_dir> <path/to/outfile.csv>")
+	print("USAGE: python GNBR_2_csv.py <path/to/part-i-file> <path/to/flattened-graph-outfile.csv>")
 	exit()
 
 
@@ -20,15 +19,15 @@ import_dir = sys.argv[1]
 themeFiles = sorted([f for f in os.listdir(import_dir) if '-i-' in f])
 depPathFiles = sorted([f for f in os.listdir(import_dir) if '-ii-' in f])
 outName = sys.argv[2].replace('.csv', '')
-outFiles = [outName + '_%i.csv' %i  for i in range(len(themeFiles))]
+outFiles = [outName + '_%i.csv.gz' %i  for i in range(len(themeFiles))]
 
 
-print('Generating Relationships: STATEMENT')
+print('processing', sys.argv)
 start_time = time.time()
 for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
     # Create a dictionary of the dependency paths (key) and their theme score vectors (value)
     depDict = dict()
-    with open( filepath(themeFile) , "rt") as themeIn:
+    with gzip.open( filepath(themeFile) , "rt") as themeIn:
         depDict["header"] = themeIn.readline().strip().split("\t")
         for line in themeIn.readlines():
             info = line.strip().split("\t")
@@ -40,7 +39,7 @@ for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
 
     # Generate the output final output file as we iterate over the part-ii file
     netOut = dict()
-    with open( filepath(depPathFile) , "rt") as dpathIn:
+    with gzip.open( filepath(depPathFile) , "rt") as dpathIn:
         i = 0
         for line in dpathIn.readlines():
             info = line.strip().split("\t")
@@ -59,7 +58,7 @@ for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
                 netOut[entity_pair] = depDict.get(dpKey)
 
     # Write the final output to a file
-    with open(outFile, "wt") as outCsv:
+    with gzip.open(outFile, "wt") as outCsv:
         # header = ["entity1", "entity2", "species"] + outThemeHeader (REPLACED WITH LINE BELOW)
         header = [":START_ID(Entity-ID)", ":END_ID(Entity-ID)"] + outThemeHeader
         outCsv.write(",".join(header)+ "\n")
@@ -87,8 +86,8 @@ for themeFile, depPathFile, outFile in zip(themeFiles, depPathFiles , outFiles):
             # Write joined file values to file
             outCsv.write(",".join('"{0}"'.format(x) for x in info) + "\n")
 
-    # print("finished processing ", themeFile, depPathFile, time.time() - start_time)
-    print('wrote', outFile.split('/')[-1], time.time() - start_time)
+    print("finished processing ", themeFile, depPathFile, time.time() - start_time)
+    print('wrote', outFile)
 
 
 
