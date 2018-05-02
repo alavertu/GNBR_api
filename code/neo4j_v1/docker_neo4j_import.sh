@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Full db import
+docker run --env=NEO4J_dbms.directories.import=/import --env=NEO4J_dbms_memory_heap_maxSize=5G --volume=$HOME/Documents/Github/GNBR_api/data/neo4j/import:/import --volume=$HOME/Documents/Github/GNBR_api/data/neo4j/data:/data neo4j:latest /var/lib/neo4j/bin/neo4j-admin import --nodes:Entity=/import/entities.csv --nodes:Sentence=/import/sentences.csv --nodes:Predicate=/import/predicates_0.csv --nodes:Predicate=/import/predicates_1.csv --nodes:Predicate=/import/predicates_2.csv --nodes:Predicate=/import/predicates_3.csv --relationships:IN_SENTENCE=/import/in_sentence.csv --relationships:HAS_PREDICATE=/import/has_predicate.csv --relationships:STATEMENT=/import/statements_0.csv --relationships:STATEMENT=/import/statements_1.csv --relationships:STATEMENT=/import/statements_2.csv --relationships:STATEMENT=/import/statements_3.csv --database=graph.db
+
+# Test Import
+#docker run --env=NEO4J_dbms.directories.import=/import --env=NEO4J_dbms_memory_heap_maxSize=5G --volume=$HOME/Documents/Github/GNBR_api/data/neo4j/import:/import --volume=$HOME/Documents/Github/GNBR_api/data/neo4j/data:/data neo4j:latest /var/lib/neo4j/bin/neo4j-admin import --nodes:Entity=/import/entities.csv --relationships:STATEMENT=/import/statements_0.csv --relationships:STATEMENT=/import/statements_1.csv --relationships:STATEMENT=/import/statements_2.csv --relationships:STATEMENT=/import/statements_3.csv --database=graph.db
