@@ -1,13 +1,13 @@
 version: '3'
 services:
-  # web:
-  #   build: .
-  #   environment:
-  #     - NEO4J_AUTH=none
-  #   ports:
-  #     - "8071:5000"
-  #   depends_on:
-  #     - "db"
+  web:
+    build: .
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - "8071:5000"
+    depends_on:
+      - "db"
   db:
     image: neo4j
     environment:
