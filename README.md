@@ -47,7 +47,7 @@ This script must be run with version 3 of python, in the terminal run `python --
 ```
 cd GNBR_beacon/neo4j/
 python3 ./download_gnbr.sh # if you don't already have data downloaded
-python3 ./migrate.sh
+python3 ./format_gnbr.sh
 ```
 
 Warning: The download script will create a directory in which to place the GNBR files.  Modify the variable `GNBR_DIR` to change the download location.  Similarly, the migrate scripts creates drirectories in which to stage the data for import (`$PATH_TO_NEO_DATA/import/`), store logs (`$PATH_TO_NEO_DATA/logs`), and place the neo4j database (`$PATH_TO_NEO_DATA/data`).  Also make sure that the location of the GNBR data stored in the `GNBR_DIR` variable matched that in the download script.  Edit the scripts to configure the file locations as you see fit.
