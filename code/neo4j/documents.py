@@ -23,7 +23,7 @@ in_header = [
     "path", "text"
     ] 
 
-out_header = ['pmid:ID(Document-ID)', 'year']
+out_header = ['pmid:ID(Document-ID)', 'year:int']
 id_fields = ['text']
 
 rela_header = [':START_ID(Sentence-ID)', ':END_ID(Document-ID)']
