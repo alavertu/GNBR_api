@@ -138,10 +138,21 @@ match (s)-[:HAS_PATH]-(th:Path)
 return 
 distinct s, count(th) as pcount order by pcount desc limit 10
 
+// Get 10 oldest sentences mentioning FA
+match (d:Document)-[:IN_DOCUMENT]-(s:Sentence),
+(s)-[:IN_SENTENCE]-(:Disease{uri:"MESH:D005199"})
+return s.text, d.year order by d.year limit 10
 
+// Get disease for which FA causal genes have therapeutic effect
 match p=(:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(g:Gene) 
 where r.u_ind > 0 
 with distinct g, r
 match p=(d:Disease)-[s:STATEMENT]-(g)
 where s.te_ind > 0
 return g, d, r.u, s.te order by r.u*s.te desc limit 10
+
+// Get most common string mentions
+match (n:Chemical)
+with n
+match (n)-[r:IN_SENTENCE]-(:Sentence)
+return distinct n.name, r.raw_string, count (r.raw_string) as num order by num desc limit 25
