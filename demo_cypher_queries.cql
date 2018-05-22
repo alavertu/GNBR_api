@@ -95,28 +95,16 @@ return
     keys(n) as properties,
     reduce(accumulator = [], key IN keys(n) | accumulator + n[key]) as values
 
-// Get sum of node property values
-match p=(d:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(e:Entity)
-return 
-distinct e, d, 
-reduce(accumulator = 0, key IN keys(r) | accumulator + r[key]) as values 
-order by values desc limit 5
-
-// Compute frequencies 
-match p=(d:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(e:Entity)
-with e, d, r, reduce(accumulator = 0.0, key IN keys(r) | accumulator + r[key]) as sum
-return 
-distinct e, d, sum,
-reduce(accumulator = [], key IN keys(r) | accumulator + (r[key]/sum)^2 as values
-order by sum desc limit 5
-
-// get gini purity
-match p=(d:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(e:Entity)
-with e, d, r, reduce(accumulator = 0.0, key IN keys(r) | accumulator + r[key]) as sum
-return 
-distinct e, d, r, sum,
-reduce(accumulator = 0.0, key IN keys(r) | accumulator + (r[key]/sum)^2) as gini
-order by sum*gini desc limit 5
+// Most informative sentences
+match 
+(d:Disease{uri:"MESH:D005199"})-[:IN_SENTENCE]-(s:Sentence)
+with distinct s
+match (e:Entity)-[:IN_SENTENCE]-(s)
+with 
+distinct s, count(e) as ecount
+match (s)-[:HAS_THEME]-(th:Theme)
+return s.text, ecount,  reduce(accumulator = 0.0, key IN keys(th) | accumulator + th[key]) as values
+order by ecount + log(values) desc limit 5
 
 // Return entity count for sentences related to FA (sorted)
 match p=(d:Disease{uri:"MESH:D005199"})-[r:IN_SENTENCE]-(s:Sentence)
@@ -130,6 +118,29 @@ match p=(d:Disease{uri:"MESH:D005199"})-[r:IN_SENTENCE]-(s:Sentence),
 (s)-[:IN_SENTENCE]-(e:Entity)
 return 
 distinct e, d, count(s) as scount order by scount desc limit 10
+
+// get gini purity
+match p=(d:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(e:Entity)
+with e, d, r, reduce(accumulator = 0.0, key IN keys(r) | accumulator + r[key]) as sum
+return 
+distinct e, d, r, sum,
+reduce(accumulator = 0.0, key IN keys(r) | accumulator + (r[key]/sum)^2) as gini
+order by sum*gini desc limit 5
+
+// Get sum of theme weights
+match p=(d:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(e:Entity)
+return 
+distinct e, d, 
+reduce(accumulator = 0, key IN keys(r) | accumulator + r[key]) as values 
+order by values desc limit 5
+
+// Compute frequencies 
+match p=(d:Disease{uri:"MESH:D005199"})-[r:STATEMENT]-(e:Entity)
+with e, d, r, reduce(accumulator = 0.0, key IN keys(r) | accumulator + r[key]) as sum
+return 
+distinct e, d, sum,
+reduce(accumulator = [], key IN keys(r) | accumulator + (r[key]/sum)^2 as values
+order by sum desc limit 5
 
 // Get dependency path count for sentences with FA
 match p=(d:Disease{uri:"MESH:D005199"})-[r:IN_SENTENCE]-(s:Sentence)

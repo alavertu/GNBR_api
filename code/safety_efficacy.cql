@@ -59,3 +59,8 @@ limit 5
 // Collect string names
 match (n:Chemical{uri:"MESH:D005665"})-[r:IN_SENTENCE]-(:Sentence)
 return distinct r.raw_string, count (r.raw_string) as num order by num desc limit 5
+
+// Aggregate over predicates for a sentence
+match (s:Sentence)-[:HAS_THEME]-(r:`Chemical|Disease`)
+where r.sa_ind > 0
+return distinct s.text, sum(r.sa) as safe order by safe desc limit 10
