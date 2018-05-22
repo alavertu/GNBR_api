@@ -3,5 +3,5 @@ import.report
 neo4j/data/*
 *logfile*
 data/*
-env/*
+*env/*
 __pycache__/*
