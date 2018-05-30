@@ -1,6 +1,7 @@
 import connexion
 import six
 
+from neo4j.v1 import GraphDatabase
 from swagger_server.models.beacon_concept import BeaconConcept  # noqa: E501
 from swagger_server.models.beacon_concept_with_details import BeaconConceptWithDetails  # noqa: E501
 from swagger_server import util
@@ -35,6 +36,19 @@ def get_concepts(keywords, types=None, pageNumber=None, pageSize=None):  # noqa:
 
     :rtype: List[BeaconConcept]
     """
+    query = """
+    MATCH p=(m:Entity)-[r:IN_SENTENCE]-(:Sentence)
+    WHERE r.raw_string={word}
+    RETURN m
+    LIMIT 1
+    """
+
+    word = keywords
+    driver = GraphDatabase.driver('bolt://localhost:7687', auth=('',''))
+    with driver.session() as neo4j:
+        results = neo4j.run(query, {"word" : word})
+    for record in results:
+        print(record)
     return 'do some magic!'
 
 
