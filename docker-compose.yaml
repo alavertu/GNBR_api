@@ -1,13 +1,14 @@
 version: '3'
 services:
-  # web:
-  #   build: .
-  #   environment:
-  #     - NEO4J_AUTH=none
-  #   ports:
-  #     - "8071:5000"
-  #   depends_on:
-  #     - "db"
+  web:
+    build: ./code/python-flask-server/
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+      - "8080:8080"
+      - "8071:5000"
+    depends_on:
+      - "db"
   db:
     image: neo4j
     environment:
@@ -22,6 +23,6 @@ services:
     volumes:
       # NOTE: if docker-compose is run under 'sudo' then $HOME will be 'root'
       # Change path2neo to your local path
-      - /neo4j/data:/data
-      - /neo4j/import:/import
-      - /neo4j/logs:/logs 
+      - /Users/srensi/Documents/GitHub/GNBR_api/data/neo4j/data:/data
+      - /Users/srensi/Documents/GitHub/GNBR_api/data/neo4j/import:/import
+      - /Users/srensi/Documents/GitHub/GNBR_api/data/neo4j/logs:/logs 
