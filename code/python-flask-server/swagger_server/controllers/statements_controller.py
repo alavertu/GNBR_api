@@ -42,7 +42,7 @@ def get_evidence(statementId, keywords=None, pageNumber=None, pageSize=None):  #
     ORDER BY theme DESC
     LIMIT 10
     """
-    driver = GraphDatabase.driver('bolt://localhost:7687', auth=('',''))
+    driver = GraphDatabase.driver('bolt://172.18.0.2:7687', auth=('',''))
     with driver.session() as neo4j:
         results = neo4j.run(query, {"entity1" : entity1,"entity2" : entity2, "code":code})
     output = []
@@ -84,7 +84,7 @@ def get_statements(s, relations=None, t=None, keywords=None, types=None, pageNum
     """
     entity1 = s[0]
     entity2 = s[1]
-    driver = GraphDatabase.driver('bolt://localhost:7687', auth=('',''))
+    driver = GraphDatabase.driver('bolt://172.18.0.2:7687', auth=('',''))
     with driver.session() as neo4j:
         results = neo4j.run(query, {"entity1" : entity1,"entity2" : entity2})
 
